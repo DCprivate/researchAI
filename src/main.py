@@ -34,10 +34,10 @@ def main():
     #query_embedding = embeddings[0].embedding
     
     embedder = QueryEmbedder()
-    query = "Does this dataset say anything about black holes?"
+    query = "is there anything in the documents about pollutants? don't give anything about c++ or from the primer book"
     query_embedding = embedder.embed_query(query)
 
-    results = retrieve_top_k(query_embedding=query_embedding, embedded_chunks=embeddings, chunk_map=chunk_map, k=5)
+    results = retrieve_top_k(query_embedding=query_embedding, embedded_chunks=embeddings, chunk_map=chunk_map, k=500)
 
     """print("Query:", query)
     for result in results:
@@ -46,6 +46,9 @@ def main():
         print(f"chunk_id: {result.chunk_id}")
         print(f"title:    {result.metadata.get('title')}")
         print(f"text:     {result.text[:300]}")"""
+        
+    for result in results:
+        print(result.metadata)
 
     prompt = build_prompt(query, results)
     #print(prompt)
