@@ -19,3 +19,11 @@ class EmbeddedChunk:
     #text: str
     embedding: list[float]
     metadata: dict[str, Any] = field(default_factory=dict)
+    
+@dataclass
+class RetrievedChunk:
+    chunk_id: str
+    doc_id: str
+    text: str
+    score: float
+    metadata: dict[str, Any] = field(default_factory=dict)
