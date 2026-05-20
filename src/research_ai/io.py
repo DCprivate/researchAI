@@ -1,10 +1,8 @@
 import json
 from pathlib import Path
 
-from research_ai.models import ChunkRecord, EmbeddedChunk
-
-
-SUPPORTED_ARTIFACT_VERSIONS = {"1.0"}
+from research_ai.models import ChunkRecord, ChunkEmbedding
+from research_ai.schema import SUPPORTED_ARTIFACT_VERSIONS
 
 
 def read_jsonl(path: str | Path) -> list[dict]:
@@ -30,7 +28,7 @@ def read_jsonl(path: str | Path) -> list[dict]:
 
 def validate_chunk_row(row: dict) -> None:
     required = {
-        #"artifact_version": str,
+        "artifact_version": str,
         "chunk_id": str,
         "doc_id": str,
         "text": str,
@@ -47,15 +45,15 @@ def validate_chunk_row(row: dict) -> None:
                 f"Chunk field '{key}' must be {expected_type.__name__}, got {type(row[key]).__name__}"
             )
 
-    """if row["artifact_version"] not in SUPPORTED_ARTIFACT_VERSIONS:
+    if row["artifact_version"] not in SUPPORTED_ARTIFACT_VERSIONS:
         raise ValueError(
             f"Unsupported chunk artifact_version: {row['artifact_version']}"
-        )"""
+        )
 
 
 def validate_embedding_row(row: dict) -> None:
     required = {
-        #"artifact_version": str,
+        "artifact_version": str,
         "chunk_id": str,
         "doc_id": str,
         "embedding": list,
@@ -71,10 +69,10 @@ def validate_embedding_row(row: dict) -> None:
                 f"Embedding field '{key}' must be {expected_type.__name__}, got {type(row[key]).__name__}"
             )
 
-    """if row["artifact_version"] not in SUPPORTED_ARTIFACT_VERSIONS:
+    if row["artifact_version"] not in SUPPORTED_ARTIFACT_VERSIONS:
         raise ValueError(
             f"Unsupported embedding artifact_version: {row['artifact_version']}"
-        )"""
+        )
 
     if not row["embedding"]:
         raise ValueError("Embedding vector must not be empty")
@@ -95,7 +93,7 @@ def load_chunks_jsonl(path: str | Path) -> list[ChunkRecord]:
     return chunks
 
 
-def load_embeddings_jsonl(path: str | Path) -> list[EmbeddedChunk]:
+def load_embeddings_jsonl(path: str | Path) -> list[ChunkEmbedding]:
     rows = read_jsonl(path)
 
     embeddings = []
@@ -112,7 +110,7 @@ def load_embeddings_jsonl(path: str | Path) -> list[EmbeddedChunk]:
                 f"Inconsistent embedding dimensions: expected {expected_dim}, got {current_dim}"
             )
 
-        embeddings.append(EmbeddedChunk(**row))
+        embeddings.append(ChunkEmbedding(**row))
 
     return embeddings
 

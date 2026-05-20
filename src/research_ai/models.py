@@ -13,7 +13,7 @@ class ChunkRecord:
 
 
 @dataclass
-class EmbeddedChunk:
+class ChunkEmbedding:
     artifact_version: str
     chunk_id: str
     doc_id: str

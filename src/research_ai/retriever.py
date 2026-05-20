@@ -1,20 +1,9 @@
 import math
 
-from research_ai.models import ChunkRecord, EmbeddedChunk, RetrievedChunk
+from research_ai.models import ChunkRecord, ChunkEmbedding, RetrievedChunk
+from research_ai.schema import SUPPORTED_ARTIFACT_VERSIONS
 
 def cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
-    """_summary_
-
-    Args:
-        vec_a (list[float]): _description_
-        vec_b (list[float]): _description_
-
-    Raises:
-        ValueError: _description_
-
-    Returns:
-        float: _description_
-    """
     if len(vec_a) != len(vec_b):
         raise ValueError("Vector dimensions do not match")
 
@@ -30,25 +19,11 @@ def cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
 
 def retrieve_top_k(
     query_embedding: list[float],
-    embedded_chunks: list[EmbeddedChunk],
+    embedded_chunks: list[ChunkEmbedding],
     chunk_map: dict[str, ChunkRecord], k: int = 5,
     ) -> list[RetrievedChunk]:
-    """_summary_
-
-    Args:
-        query_embedding (list[float]): _description_
-        embedded_chunks (list[EmbeddedChunk]): _description_
-        chunk_map (dict[str, ChunkRecord]): _description_
-        k (int, optional): _description_. Defaults to 5.
-
-    Raises:
-        ValueError: _description_
-
-    Returns:
-        list[RetrievedChunk]: _description_
-    """
     
-    scored: list[tuple[float, EmbeddedChunk]] = []
+    scored: list[tuple[float, ChunkEmbedding]] = []
     
     for embedded_chunk in embedded_chunks:
         score = cosine_similarity(query_embedding, embedded_chunk.embedding)
@@ -68,6 +43,7 @@ def retrieve_top_k(
 
         results.append(
             RetrievedChunk(
+                artifact_version=SUPPORTED_ARTIFACT_VERSIONS,
                 chunk_id=chunk.chunk_id,
                 doc_id=chunk.doc_id,
                 text=chunk.text,
