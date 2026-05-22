@@ -23,10 +23,16 @@ def main():
     
     # Set up query (this is hardcoded for now)
     embedder = QueryEmbedder()
-    query = "is there anything in the documents about pollutants? don't give anything about c++ or from the primer book"
+    query = "I want you to explain to me how blackholes work"
     query_embedding = embedder.embed_query(query)
 
-    results = retrieve_top_k(query_embedding=query_embedding, embedded_chunks=embeddings, chunk_map=chunk_map, k=500)
+    results = retrieve_top_k(query_embedding=query_embedding, embedded_chunks=embeddings, chunk_map=chunk_map, k=5)
+    
+    """for result in results:
+        print("="*80)
+        print(result.score)
+        print(result.metadata)
+        print(result.text)"""
 
     prompt = build_prompt(query, results)
 

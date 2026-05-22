@@ -29,7 +29,6 @@ def build_prompt(query: str, chunks: list[RetrievedChunk]) -> str:
 Answer the user's question using only the provided context.
 If the answer is not supported by the context, say that the available sources do not provide enough information.
 Do not invent facts that are not grounded in the sources.
-When possible, refer to the source numbers in your answer.
 
 User Question:
 {query}
