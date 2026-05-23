@@ -8,7 +8,7 @@ class OllamaClient:
         self,
         model_name: str = "mistral:latest",
         base_url: str = "http://localhost:11434/api",
-        timeout: int = 120,
+        timeout: int = 240,
     ):
         self.model_name = model_name
         self.base_url = base_url.rstrip("/")

@@ -23,10 +23,10 @@ def main():
     
     # Set up query (this is hardcoded for now)
     embedder = QueryEmbedder()
-    query = "I want you to explain to me how blackholes work"
+    query = "Tell me about black holes"
     query_embedding = embedder.embed_query(query)
 
-    results = retrieve_top_k(query_embedding=query_embedding, embedded_chunks=embeddings, chunk_map=chunk_map, k=5)
+    results = retrieve_top_k(query_embedding=query_embedding, embedded_chunks=embeddings, chunk_map=chunk_map, k=50)
     
     """for result in results:
         print("="*80)
@@ -36,7 +36,7 @@ def main():
 
     prompt = build_prompt(query, results)
 
-    llm = OllamaClient(model_name="mistral:latest")
+    llm = OllamaClient(model_name="qwen3.5:9b")
     answer = llm.generate(prompt)
     
     print("\nAnswer:\n")
